@@ -17,3 +17,8 @@ class Product(BaseModel):
     image = models.ImageField(upload_to='media')
     max_order = models.PositiveSmallIntegerField()
 
+
+# class Comment(BaseModel):
+#     user = ...
+#     product = models.ForeignKey(to=Product, on_delete=models.CASCADE)
+#     content = models.CharField(max_length=255)
