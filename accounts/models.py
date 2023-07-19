@@ -34,6 +34,10 @@ class User(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+    
+    def specify_role(self):
+        if self.is_admin:
+            self.role = self.RoleStatus.ADMIN
 
 
 class UserProfile(models.Model):
