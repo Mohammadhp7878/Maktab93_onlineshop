@@ -7,7 +7,10 @@ class Category(BaseModel):
     name = models.CharField(max_length=150)
     slug = models.SlugField()
     description = models.CharField(max_length=255)
-    parent = models.ForeignKey(to="Category", on_delete=models.SET_NULL, null=True)
+    parent = models.ForeignKey(to="Category", on_delete=models.SET_NULL, null=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = "categories"
 
 
 class Product(BaseModel):
