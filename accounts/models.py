@@ -1,6 +1,12 @@
 from core.models import BaseModel
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from .managers import UserManager
+from utilize import validate_password
+
+class OtpCode(BaseModel):
+    phone_number = models.CharField(max_length=11, unique=True)
+    code = models.CharField(max_length=5)
 
 
 class User(AbstractBaseUser):
@@ -15,7 +21,10 @@ class User(AbstractBaseUser):
         max_length=1, choices=RoleStatus.choices, default=RoleStatus.CUSTOMER
     )
 
+    objects = UserManager
+
     USERNAME_FIELD = "phone_number"
+    REQUIRED_FIELDS = ["email", "password"]
 
     def __str__(self) -> str:
         return self.phone_number
@@ -32,13 +41,13 @@ class UserProfile(models.Model):
         MALE = ("M", "male")
         FEMALE = ("F", "female")
 
-    related_user = models.OneToOneField(to=User, on_delete=models.CASCADE)
+    user = models.OneToOneField(to=User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=180)
     last_name = models.CharField(max_length=180)
     email = models.EmailField(unique=True)
     birthday = models.TimeField()
     sex = models.CharField(max_length=1, choices=SexChoice.choices)
-    password = models.CharField()
+    password = models.CharField(validators=[validate_password])
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}"
@@ -54,3 +63,5 @@ class Address(BaseModel):
 
     def __str__(self) -> str:
         return f"{self.id}"
+
+
