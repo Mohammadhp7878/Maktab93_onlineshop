@@ -2,14 +2,12 @@ from django.db import models
 from core.models import BaseModel
 from accounts.models import User
 
+
 class Category(BaseModel):
     name = models.CharField(max_length=150)
     slug = models.SlugField()
     description = models.CharField(max_length=255)
-    parent = models.ForeignKey(to='Category', on_delete=models.SET_NULL, null=True)
-
-
-
+    parent = models.ForeignKey(to="Category", on_delete=models.SET_NULL, null=True)
 
 
 class Product(BaseModel):
@@ -19,15 +17,14 @@ class Product(BaseModel):
     description = models.CharField(max_length=255)
     inventory = models.PositiveSmallIntegerField()
     price = models.DecimalField(max_digits=8, decimal_places=2)
-    image = models.ImageField(upload_to='media')
+    image = models.ImageField(upload_to="media")
     max_order = models.PositiveSmallIntegerField()
 
 
 class Brand(BaseModel):
     brand_name = models.CharField(max_length=250)
-    logo = models.ImageField(upload_to='media/')
+    logo = models.ImageField(upload_to="media/")
     products = models.ForeignKey(to=Product, on_delete=models.CASCADE, null=True)
-    
 
 
 class Comment(BaseModel):

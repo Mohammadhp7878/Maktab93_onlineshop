@@ -163,3 +163,4 @@ cython_debug/
 
 # Django migration files
 **/migrations/
+.vscode
