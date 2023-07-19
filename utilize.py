@@ -11,3 +11,7 @@ def validate_password(value):
         raise ValidationError("Password must have at least one number.")
     if not re.search(r"[!@#$%^&*()-_=+{}<>]", value):
         raise ValidationError("Password must have at least one special character.")
+    
+
+def send_otp(phone_number, code):
+    ...
