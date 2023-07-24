@@ -63,7 +63,7 @@ class Address(BaseModel):
     city = models.CharField(max_length=100)
     street = models.CharField(max_length=100)
     detail = models.CharField(max_length=255)
-    postal_code = models.CharField(unique=True)
+    postal_code = models.CharField()
 
     def __str__(self) -> str:
         return f"{self.id}"
