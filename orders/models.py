@@ -14,3 +14,18 @@ class Order(BaseModel):
     )
     deliver_time = models.TimeField()
     total_price = models.DecimalField(max_digits=8, decimal_places=2)
+    city = models.CharField(max_length=100)
+    street = models.CharField(max_length=100)
+    detail = models.CharField(max_length=255)
+    postal_code = models.CharField()
+
+class ProductOrder(BaseModel):
+    products = models.ForeignKey(to=Product, on_delete=models.CASCADE)
+    orders = models.ForeignKey(to=Order, on_delete=models.CASCADE)
+    quantity = models.PositiveSmallIntegerField()
+    price = models.DecimalField(max_digits=8, decimal_places=2)
+    
+    
+    
+    
+    

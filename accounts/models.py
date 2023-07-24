@@ -20,11 +20,12 @@ class User(AbstractBaseUser):
     role = models.CharField(
         max_length=1, choices=RoleStatus.choices, default=RoleStatus.CUSTOMER
     )
+    password = models.CharField(validators=[validate_password], null=True)
 
-    objects = UserManager
+    objects = UserManager()
 
     USERNAME_FIELD = "phone_number"
-    REQUIRED_FIELDS = ["email", "password"]
+    REQUIRED_FIELDS = ["password"]
 
     def __str__(self) -> str:
         return self.phone_number
@@ -34,10 +35,14 @@ class User(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+    
+    def specify_role(self):
+        if self.is_admin:
+            self.role = self.RoleStatus.ADMIN
 
 
 class UserProfile(models.Model):
-    class SexChoice(models.TextChoices):
+    class GenderChoice(models.TextChoices):
         MALE = ("M", "male")
         FEMALE = ("F", "female")
 
@@ -46,20 +51,19 @@ class UserProfile(models.Model):
     last_name = models.CharField(max_length=180)
     email = models.EmailField(unique=True)
     birthday = models.TimeField()
-    sex = models.CharField(max_length=1, choices=SexChoice.choices)
-    password = models.CharField(validators=[validate_password])
+    gender = models.CharField(max_length=1, choices=GenderChoice.choices)
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}"
 
 
 class Address(BaseModel):
-    user = models.OneToOneField(to=User, on_delete=models.CASCADE)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     country = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
     street = models.CharField(max_length=100)
     detail = models.CharField(max_length=255)
-    postal_code = models.CharField(unique=True)
+    postal_code = models.CharField()
 
     def __str__(self) -> str:
         return f"{self.id}"
