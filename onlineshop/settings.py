@@ -42,8 +42,8 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'orders.apps.OrdersConfig',
     'accounts.apps.AccountsConfig',
-    'core.apps.CoreConfig'
-]
+    'core.apps.CoreConfig',
+    'rest_framework',]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
