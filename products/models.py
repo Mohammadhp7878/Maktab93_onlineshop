@@ -13,6 +13,9 @@ class Category(BaseModel):
 
     class Meta:
         verbose_name_plural = "categories"
+        
+    def __str__(self) -> str:
+        return Category.name
 
 
 class Gallery(BaseModel):
@@ -29,6 +32,9 @@ class Product(BaseModel):
     price = models.DecimalField(max_digits=8, decimal_places=2)
     images = models.ForeignKey(to=Gallery, on_delete=models.SET_NULL, null=True)
     max_order = models.PositiveSmallIntegerField()
+    
+    def __str__(self) -> str:
+        return Product.name
 
 
 class Brand(BaseModel):
@@ -36,8 +42,12 @@ class Brand(BaseModel):
     logo = models.ImageField(upload_to="media/")
     products = models.ForeignKey(to=Product, on_delete=models.CASCADE, null=True)
 
+    def __str__(self) -> str:
+        return Brand.brand_name
 
 class Comment(BaseModel):
     user = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True)
     product = models.ForeignKey(to=Product, on_delete=models.CASCADE)
     content = models.CharField(max_length=255)
+
+    
