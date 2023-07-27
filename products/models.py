@@ -8,15 +8,23 @@ class Category(BaseModel):
     slug = models.SlugField()
     description = models.CharField(max_length=255)
     parent = models.ForeignKey(
-        to="Category", on_delete=models.SET_NULL, null=True, blank=True
+        to="self", on_delete=models.SET_NULL, null=True, blank=True, related_name='children'
     )
-
     class Meta:
         verbose_name_plural = "categories"
         
     def __str__(self) -> str:
-        return Category.name
+        if self.parent:
+            return f'{self.parent}-{self.name}'
+        else: 
+            return self.name
 
+    def get_children(self):
+        children = [self]
+        for child in self.children.all():
+            children.extend(child.get_children())
+        return children
+            
 
 class Gallery(BaseModel):
     image_url = models.ImageField(upload_to="media/")
@@ -34,7 +42,7 @@ class Product(BaseModel):
     max_order = models.PositiveSmallIntegerField()
     
     def __str__(self) -> str:
-        return Product.name
+        return self.name
 
 
 class Brand(BaseModel):
@@ -43,7 +51,7 @@ class Brand(BaseModel):
     products = models.ForeignKey(to=Product, on_delete=models.CASCADE, null=True)
 
     def __str__(self) -> str:
-        return Brand.brand_name
+        return self.brand_name
 
 class Comment(BaseModel):
     user = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True)
