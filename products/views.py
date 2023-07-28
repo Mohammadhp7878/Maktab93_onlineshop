@@ -11,4 +11,4 @@ class ProductView(View):
 
 class ProductList(generics.ListAPIView):
     queryset = models.Product.objects.all()
-    serializer_class = serializers.ProductSerializer(instance=queryset)
+    serializer_class = serializers.ProductSerializer
