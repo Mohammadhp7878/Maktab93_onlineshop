@@ -33,7 +33,7 @@ class Gallery(BaseModel):
 
 class Product(BaseModel):
     name = models.CharField(max_length=255)
-    categories = models.ManyToManyField(to=Category, on_delete=models.PROTECT, related_name='products')
+    categories = models.ManyToManyField(to=Category, related_name='products')
     slug = models.SlugField()
     description = models.CharField(max_length=255)
     inventory = models.PositiveSmallIntegerField()
@@ -48,7 +48,7 @@ class Product(BaseModel):
 class Brand(BaseModel):
     brand_name = models.CharField(max_length=250)
     logo = models.ImageField(upload_to="media/")
-    products = models.ForeignKey(to=Product, on_delete=models.PROTECT, null=True, related_name='brands')
+    products = models.ForeignKey(to=Product, on_delete=models.PROTECT, related_name='brands')
 
     def __str__(self) -> str:
         return self.brand_name
