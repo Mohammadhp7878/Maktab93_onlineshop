@@ -9,10 +9,15 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(models.Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'category', 'inventory', 'price']
+    list_display = ['name', 'inventory', 'price']
     ordering = ['name', 'price']
     search_fields = ['name', 'category']
 
 @admin.register(models.Brand)
 class BrandAdmin(admin.ModelAdmin):
     list_display = ['brand_name', 'logo']
+    
+
+admin.site.register(models.Gallery)
+class GalleryAdmin(admin.ModelAdmin):
+    list_display = '__all__'
