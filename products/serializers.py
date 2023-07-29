@@ -2,17 +2,16 @@ from rest_framework import serializers
 from . import models
 
 
-class CommentSerializer(serializers.ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Category
         fields = ["name", "description", "parent"]
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    comments = CommentSerializer(many=True, read_only=True)
     class Meta:
         model = models.Product
-        fields = "__all__"
+        fields = ["name", "description", "price", "images"]
 
 
 class BrandSerializer(serializers.ModelSerializer):
