@@ -12,3 +12,13 @@ class ProductView(View):
 class ProductList(generics.ListAPIView):
     queryset = models.Product.objects.all()
     serializer_class = serializers.ProductSerializer
+    
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return render(request, 'products.html', {'products': serializer.data})
+
+class SingleProduct(generics.RetrieveAPIView):
+    queryset = models.Product.objects.all()
+    serializer_class = serializers.ProductSerializer
+    lookup_field = 'pk'
