@@ -21,3 +21,8 @@ class BrandAdmin(admin.ModelAdmin):
 admin.site.register(models.Gallery)
 class GalleryAdmin(admin.ModelAdmin):
     list_display = '__all__'
+    
+    
+admin.site.register(models.Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = 'all'
