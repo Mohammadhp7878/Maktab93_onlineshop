@@ -18,3 +18,7 @@ class SingleProduct(generics.RetrieveAPIView):
     queryset = models.Product.objects.all()
     serializer_class = serializers.ProductSerializer
     lookup_field = 'pk'
+    
+class CategoryView(generics.ListAPIView):
+    queryset = models.Category.objects.all()
+    serializer_class = serializers.CategorySerializer
