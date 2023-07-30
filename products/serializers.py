@@ -2,10 +2,18 @@ from rest_framework import serializers
 from . import models
 
 
-class CategorySerializer(serializers.ModelSerializer):
+class NestedCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Category
-        fields = ["name", "description", "parent"]
+        fields = ("name", "slug", "description", "children")
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    children = NestedCategorySerializer(many=True, read_only=True)
+
+    class Meta:
+        model = models.Category
+        fields = ["name",  "slug", "description", "parent", "children"]
 
 
 class ProductSerializer(serializers.ModelSerializer):
