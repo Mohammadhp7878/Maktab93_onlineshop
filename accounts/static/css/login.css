@@ -1,0 +1,58 @@
+.container {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#login_header {
+    text-align: center;
+    padding: 5px;
+    background-color: #d19c97;
+    width: 400px; /* Set the same width as the form */
+    border-radius: 5px;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #d19c97;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 400px; /* Set the same width as the header */
+}
+
+
+#confirm_button {
+    background-color: #d19c97;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+
+.login_label label {
+    font-size: 22px; 
+    color: rgba(0, 0, 0, 0.2); 
+}
+
+/* Style the phone number input */
+#phone_number {
+    font-size: 16px;
+    padding: 10px 15px; /* Increase the vertical and horizontal padding for a bigger input field */
+    border-radius: 5px; /* Rounded corners for the input field */
+    border: 1px solid #ccc;
+}
+
+/* Optional: If you want to increase the font size and add padding for the label inside .login_label */
+.login_label label {
+    font-size: 22px;
+    color: rgba(0, 0, 0, 0.2);
+    padding: 5px; /* Add padding for better appearance */
+}
