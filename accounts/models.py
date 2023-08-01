@@ -9,7 +9,7 @@ class OtpCode(BaseModel):
     code = models.CharField(max_length=5)
 
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     class RoleStatus(models.TextChoices):
         ADMIN = ("A", "admin")
         CUSTOMER = ("C", "customer")
@@ -17,6 +17,7 @@ class User(AbstractBaseUser):
     phone_number = models.CharField(max_length=11, unique=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
     role = models.CharField(
         max_length=1, choices=RoleStatus.choices, default=RoleStatus.CUSTOMER
     )

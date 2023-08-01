@@ -1,0 +1,20 @@
+{%  extends 'base.html'%}
+{% load static %}
+{% block header_link %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+{% block content %}
+
+<div class="container">
+    <h2 id="login_header">register/login</h2>
+    <form class="form-container" action="">
+        <label class="login_label" for="phone_number">phone number</label>
+        <input type="text" id="phone_number" name="phone_number" placeholder="09111111111">
+        <button type="submit" id="confirm_button">confirm</button>
+    </form>
+</div>
+<!-- <div class="container">
+    <h2 id="verify_header">verification</h2>
+    <form class="form-container" action=""></form>
+</div> -->
+{% endblock %}
