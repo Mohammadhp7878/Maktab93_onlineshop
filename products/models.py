@@ -55,7 +55,7 @@ class Brand(BaseModel):
 
 class Comment(BaseModel):
     user = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True)
-    products = models.ForeignKey(to=Product, on_delete=models.CASCADE)
-    content = models.CharField(max_length=255)
+    products = models.ForeignKey(to=Product, on_delete=models.CASCADE, related_name='comments')
+    content = models.TextField()
 
     
