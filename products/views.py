@@ -5,19 +5,16 @@ from . import serializers
 from . import models
 
 
+class ProductsPage(View):
+    def get(self, request):
+        return render(request, 'products.html')
 class ProductList(generics.ListAPIView):
     queryset = models.Product.objects.all()
     serializer_class = serializers.ProductSerializer
-    
-    def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
-        return render(request, 'products.html', {'products': serializer.data})
 
 class SingleProduct(generics.RetrieveAPIView):
     queryset = models.Product.objects.all()
     serializer_class = serializers.ProductSerializer
-    lookup_field = 'pk'
     
 class CategoryView(generics.ListAPIView):
     queryset = models.Category.objects.all()
