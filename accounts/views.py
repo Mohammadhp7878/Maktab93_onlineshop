@@ -4,7 +4,7 @@ from .forms import RegisterForm, OtpCodeForm
 import random
 from utilize import send_otp
 class Register(View):
-    reg_template = 'register.html'
+    reg_template = 'login.html'
     reg_form = RegisterForm
 
     def get(self, request):
