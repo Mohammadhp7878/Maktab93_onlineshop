@@ -4,7 +4,8 @@ from rest_framework import generics, viewsets, permissions
 from . import serializers
 from . import models
 from .permissions import IsCommentOwner
-
+from django_filters.rest_framework import DjangoFilterBackend
+from .filters import ProductFilter
 
 class ProductsPage(View):
     def get(self, request):
@@ -19,6 +20,8 @@ class CategoryView(generics.ListAPIView):
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Product.objects.all()
     serializer_class = serializers.ProductSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = ProductFilter
     
 
 class CommentViewSet(viewsets.ModelViewSet):
