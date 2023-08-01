@@ -20,6 +20,14 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Comment
         fields = ["user", "content"]
+        
+    def create(self, validated_data):
+        product_id = self.context['product_id']
+        if product_id:
+            product = models.Product.objects.get(pk=product_id)
+            return models.Comment.objects.create(products=product, **validated_data)
+        else:
+            return models.Comment.objects.create(**validated_data)
 
 
 class ProductSerializer(serializers.ModelSerializer):
