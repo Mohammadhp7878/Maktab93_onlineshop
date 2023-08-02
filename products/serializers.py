@@ -67,3 +67,10 @@ class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Brand
         field = "__all__"
+
+
+
+class SimpleProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Product
+        fields = ["id", "name", "price"]
