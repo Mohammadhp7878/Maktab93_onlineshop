@@ -14,11 +14,13 @@ class ProductsPage(View):
     
     
 class CategoryView(generics.ListAPIView):
+    permission_classes = [permissions.AllowAny]
     queryset = models.Category.objects.all()
     serializer_class = serializers.CategorySerializer
     
     
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
+    permission_classes = [permissions.AllowAny]
     queryset = models.Product.objects.all()
     serializer_class = serializers.ProductSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
