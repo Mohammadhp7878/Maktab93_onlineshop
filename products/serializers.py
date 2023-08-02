@@ -19,8 +19,8 @@ class CategorySerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Comment
-        fields = ["user", "content"]
-        
+        fields = ["id", "user", "content"]
+         
     def create(self, validated_data):
         product_id = self.context['product_id']
         if product_id:
@@ -35,7 +35,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Product
-        fields = ["name", "description", "price", "images", "comments"]
+        fields = ["id", "name", "description", "price", "images", "comments", "brand"]
 
 
 class BrandSerializer(serializers.ModelSerializer):
