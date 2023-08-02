@@ -21,9 +21,10 @@ class CategoryView(generics.ListAPIView):
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Product.objects.all()
     serializer_class = serializers.ProductSerializer
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_class = ProductFilter
     search_fields = ['name']
+    ordering_fields = ['price', 'created_at']
     
 
 class CommentViewSet(viewsets.ModelViewSet):
