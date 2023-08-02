@@ -11,6 +11,7 @@ class ProductFilter(django_filters.FilterSet):
         fields = {
             'categories' : ['exact'],
             'price': ['lte', 'gte'],
+            'brand': ['exact']
         }
         
     def check_availability(self, queryset, name, value):
