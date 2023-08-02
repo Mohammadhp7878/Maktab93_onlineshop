@@ -3,11 +3,8 @@
         try {
             const response = await fetch('/products_api/');
             const data = await response.json();
-
-            console.log(data);
             // Function to render the products in the template
             function renderProducts(products) {
-                console.log(products);
                 const productsContainer = document.getElementById('products-container');
                 let productsHTML = '';
 
