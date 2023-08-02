@@ -6,7 +6,7 @@ from accounts.models import User
 class Category(BaseModel):
     name = models.CharField(max_length=150)
     slug = models.SlugField()
-    description = models.CharField(max_length=255)
+    description = models.TextField()
     parent = models.ForeignKey(
         to="self", on_delete=models.SET_NULL, null=True, blank=True, related_name='children'
     )
@@ -35,7 +35,7 @@ class Product(BaseModel):
     name = models.CharField(max_length=255)
     categories = models.ManyToManyField(to=Category, related_name='products')
     slug = models.SlugField()
-    description = models.CharField(max_length=255)
+    description = models.TextField()
     inventory = models.PositiveSmallIntegerField()
     price = models.DecimalField(max_digits=8, decimal_places=2)
     images = models.ForeignKey(to=Gallery, on_delete=models.SET_NULL, null=True)
