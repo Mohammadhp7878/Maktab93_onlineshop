@@ -32,7 +32,7 @@ class Category(BaseModel):
 
 
 class Gallery(BaseModel):
-    image_url = models.ImageField(upload_to="media/")
+    image_url = models.ImageField(upload_to='media/products', default='media/products/product-8.jpg')
     alt = models.CharField(max_length=250)
     
     def __str__(self) -> str:
@@ -41,7 +41,7 @@ class Gallery(BaseModel):
 
 class Brand(BaseModel):
     brand_name = models.CharField(max_length=250)
-    logo = models.ImageField(upload_to="media/")
+    logo = models.ImageField(upload_to="media/products/")
 
     def __str__(self) -> str:
         return self.brand_name
@@ -51,10 +51,11 @@ class Product(BaseModel):
     name = models.CharField(max_length=255)
     categories = models.ManyToManyField(to=Category, related_name="products")
     slug = models.SlugField()
+    discount = models.PositiveSmallIntegerField(default=0)
     description = models.TextField()
     inventory = models.PositiveSmallIntegerField()
     price = models.DecimalField(max_digits=8, decimal_places=2)
-    images = models.ForeignKey(to=Gallery, on_delete=models.SET_NULL, null=True)
+    images = models.ForeignKey(to=Gallery, on_delete=models.SET_NULL, null=True, related_name='products')
     max_order = models.PositiveSmallIntegerField()
     brand = models.ForeignKey(
         to=Brand,
@@ -63,6 +64,13 @@ class Product(BaseModel):
         blank=True,
         related_name="products",
     )
+    
+    @property
+    def discount_to_price(self):
+        if self.discount > 0:
+            total_price = self.price - (self.price * self.discount / 100)
+            return float(total_price)
+        return 0
 
     def __str__(self) -> str:
         return self.name
