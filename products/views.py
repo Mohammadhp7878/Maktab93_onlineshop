@@ -1,12 +1,13 @@
-from django.shortcuts import render
 from django.views import View
+from django.shortcuts import render
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, viewsets, permissions
+from rest_framework import filters
+from .permissions import IsCommentOwner
+from .filters import ProductFilter
+from .paginations import ProductsPagination
 from . import serializers
 from . import models
-from .permissions import IsCommentOwner
-from django_filters.rest_framework import DjangoFilterBackend
-from .filters import ProductFilter
-from rest_framework import filters
 
 class ProductsPage(View):
     def get(self, request):
@@ -14,24 +15,26 @@ class ProductsPage(View):
     
     
 class CategoryView(generics.ListAPIView):
-    permission_classes = [permissions.AllowAny]
     queryset = models.Category.objects.all()
     serializer_class = serializers.CategorySerializer
+    permission_classes = [permissions.AllowAny]
     
     
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
-    permission_classes = [permissions.AllowAny]
     queryset = models.Product.objects.all()
     serializer_class = serializers.ProductSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_class = ProductFilter
+    pagination_class = ProductsPagination
+    permission_classes = [permissions.AllowAny]
     search_fields = ['name']
     ordering_fields = ['price', 'created_at']
+    ordering = ['-created_at']
     
 
 class CommentViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated, IsCommentOwner]
     serializer_class = serializers.CommentSerializer  
+    permission_classes = [permissions.IsAuthenticated, IsCommentOwner]
     
     def get_queryset(self):
         #overwrite our get_queryset to retrieve objects for specific products
