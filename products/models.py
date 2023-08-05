@@ -6,17 +6,22 @@ from accounts.models import User
 class Category(BaseModel):
     name = models.CharField(max_length=150)
     slug = models.SlugField()
-    description = models.CharField(max_length=255)
+    description = models.TextField()
     parent = models.ForeignKey(
-        to="self", on_delete=models.SET_NULL, null=True, blank=True, related_name='children'
+        to="self",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="children",
     )
+
     class Meta:
         verbose_name_plural = "categories"
-        
+
     def __str__(self) -> str:
         if self.parent:
-            return f'{self.parent}-{self.name}'
-        else: 
+            return f"{self.parent}-{self.name}"
+        else:
             return self.name
 
     def get_children(self):
@@ -24,38 +29,59 @@ class Category(BaseModel):
         for child in self.children.all():
             children.extend(child.get_children())
         return children
-            
+
 
 class Gallery(BaseModel):
-    image_url = models.ImageField(upload_to="media/")
+    image_url = models.ImageField(upload_to='media/products', default='media/products/product-8.jpg')
     alt = models.CharField(max_length=250)
-
-
-class Product(BaseModel):
-    name = models.CharField(max_length=255)
-    categories = models.ManyToManyField(to=Category, related_name='products')
-    slug = models.SlugField()
-    description = models.CharField(max_length=255)
-    inventory = models.PositiveSmallIntegerField()
-    price = models.DecimalField(max_digits=8, decimal_places=2)
-    images = models.ForeignKey(to=Gallery, on_delete=models.SET_NULL, null=True)
-    max_order = models.PositiveSmallIntegerField()
     
     def __str__(self) -> str:
-        return self.name
+        return f'{self.alt}'
 
 
 class Brand(BaseModel):
     brand_name = models.CharField(max_length=250)
-    logo = models.ImageField(upload_to="media/")
-    products = models.ForeignKey(to=Product, on_delete=models.PROTECT, related_name='brands')
+    logo = models.ImageField(upload_to="media/products/")
 
     def __str__(self) -> str:
         return self.brand_name
 
+
+class Product(BaseModel):
+    name = models.CharField(max_length=255)
+    categories = models.ManyToManyField(to=Category, related_name="products")
+    slug = models.SlugField()
+    discount = models.PositiveSmallIntegerField(default=0)
+    description = models.TextField()
+    inventory = models.PositiveSmallIntegerField()
+    price = models.DecimalField(max_digits=8, decimal_places=2)
+    images = models.ForeignKey(to=Gallery, on_delete=models.SET_NULL, null=True, related_name='products')
+    max_order = models.PositiveSmallIntegerField()
+    brand = models.ForeignKey(
+        to=Brand,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="products",
+    )
+    
+    @property
+    def discount_to_price(self):
+        if self.discount > 0:
+            total_price = self.price - (self.price * self.discount / 100)
+            return float(total_price)
+        return 0
+
+    def __str__(self) -> str:
+        return self.name
+
+
 class Comment(BaseModel):
     user = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True)
-    products = models.ForeignKey(to=Product, on_delete=models.CASCADE, related_name='comments')
+    products = models.ForeignKey(
+        to=Product, on_delete=models.CASCADE, related_name="comments"
+    )
     content = models.TextField()
-
     
+    def __str__(self) -> str:
+        return f'{self.id}'

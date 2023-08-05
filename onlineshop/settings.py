@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'orders.apps.OrdersConfig',
     'accounts.apps.AccountsConfig',
     'core.apps.CoreConfig',
-    'rest_framework',]
+    'rest_framework',
+    'django_filters']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
