@@ -28,12 +28,12 @@ class ProductOrder(BaseModel):
     
 
 class Cart(BaseModel):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
         
         
 class CartProduct(BaseModel):
     carts = models.ForeignKey(to=Cart, on_delete=models.CASCADE, related_name='items')
-    products = models.ForeignKey(to=Product, related_name='carts')
+    products = models.ForeignKey(to=Product, related_name='carts', on_delete=models.CASCADE)
     quantity = models.DecimalField(max_digits=8 ,decimal_places=2)
     
     
