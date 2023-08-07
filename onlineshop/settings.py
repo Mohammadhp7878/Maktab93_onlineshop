@@ -38,15 +38,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    'debug_toolbar'
+    'rest_framework',
+    'django_filters'
+    
     'products.apps.ProductsConfig',
     'home.apps.HomeConfig',
     'orders.apps.OrdersConfig',
     'accounts.apps.AccountsConfig',
     'core.apps.CoreConfig',
-    'rest_framework',
-    'django_filters']
+    ]
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -140,3 +145,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.User'
+
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
