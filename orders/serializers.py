@@ -65,3 +65,9 @@ class AddProductSerializer(serializers.ModelSerializer):
                 **self.validated_data
             )
         return self.instance
+    
+
+class UpdateProductSerializer(serializers.ModelSerializer):
+    class Meta: 
+        model = models.CartProduct
+        fields = ['quantity']
