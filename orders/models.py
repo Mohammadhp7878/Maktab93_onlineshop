@@ -32,10 +32,11 @@ class Cart(BaseModel):
         
         
 class CartProduct(BaseModel):
-    carts = models.ForeignKey(to=Cart, on_delete=models.CASCADE, related_name='items')
+    carts = models.ForeignKey(to=Cart, on_delete=models.CASCADE, related_name='cartproducts')
     products = models.ForeignKey(to=Product, related_name='carts', on_delete=models.CASCADE)
-    quantity = models.DecimalField(max_digits=8 ,decimal_places=2)
+    quantity = models.IntegerField()
     
-    
+    class Meta:
+        unique_together = [['carts', 'products']]
     
     
