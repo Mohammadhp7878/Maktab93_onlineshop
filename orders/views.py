@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.views import View
-from .models import Cart
-from .serializers import CartSerializer
-from rest_framework.viewsets import GenericViewSet
+from .models import Cart, CartProduct
+from .serializers import CartSerializer, CartProductSerializer, AddProductSerializer
+from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin
 
 class CartPage(View):
@@ -13,4 +13,13 @@ class CartPage(View):
 class CartViewSet(CreateModelMixin, RetrieveModelMixin, GenericViewSet):
     queryset = Cart.objects.prefetch_related('cartproducts__products').all()
     serializer_class = CartSerializer 
+
+
+class CartProductsViewSet(ModelViewSet):
+    def get_queryset(self):
+        return CartProduct.objects.filter(carts=self.kwargs['cart_pk']).select_related('products')
     
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return AddProductSerializer
+        return CartProductSerializer
