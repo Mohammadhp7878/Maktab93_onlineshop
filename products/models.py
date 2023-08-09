@@ -1,7 +1,7 @@
 from django.db import models
 from core.models import BaseModel
 from accounts.models import User
-
+from decimal import Decimal
 
 class Category(BaseModel):
     name = models.CharField(max_length=150)
@@ -69,7 +69,7 @@ class Product(BaseModel):
     def discount_to_price(self):
         if self.discount > 0:
             total_price = self.price - (self.price * self.discount / 100)
-            return float(total_price)
+            return Decimal(total_price)
         return 0
 
     def __str__(self) -> str:
