@@ -23,3 +23,6 @@ class CartProductsViewSet(ModelViewSet):
         if self.request.method == 'POST':
             return AddProductSerializer
         return CartProductSerializer
+    
+    def get_serializer_context(self):
+        return {'cart_id':self.kwargs['cart_pk']}
