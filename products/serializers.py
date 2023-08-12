@@ -59,6 +59,12 @@ class ProductSerializer(serializers.ModelSerializer):
     def get_main_image(self, product):
         main_image = product.images
         return GallerySerializer(main_image).data
+    
+    
+    # def to_representation(self, instance):
+    #     representation = super().to_representation(instance)
+    #     representation['count'] = instance.list.count()
+    #     return representation
 
 
 class BrandSerializer(serializers.ModelSerializer):
