@@ -2,18 +2,29 @@ from django.shortcuts import render, redirect
 from rest_framework.views import APIView
 import random
 from utilize import send_otp
-from .serializers import PhoneSerializer
-
+from .serializers import PhoneSerializer, OtpSerializer
+from .models import OtpCode
 
 
 class LoginAPI(APIView):
     def post(self, request):
         serializer = PhoneSerializer(data=request.data)
         if serializer.is_valid():
-            phone_number = serializer.validated_data[phone_number]
+            phone_number = serializer.validated_data['phone_number']
             code = random.randint(10000, 99999)
             send_otp(phone_number, code)
-        
+        else: 
+            serializer.errors        
+
+
+class VerifyAPI(APIView):
+    def post(self, request):
+        serializer = OtpSerializer
+        if serializer.is_valid():
+            phone_number = serializer.validated_data['phone_number']
+            code = serializer.validated_data['code']
+        if OtpCode.objects.get(phone_number, code):
+            ...
 
 # class Register(View):
 #     reg_template = "login.html"
