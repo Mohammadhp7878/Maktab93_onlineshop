@@ -4,9 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from .managers import UserManager
 from utilize import validate_password
 
-class OtpCode(BaseModel):
-    phone_number = models.CharField(max_length=11, unique=True)
-    code = models.CharField(max_length=5)
+
 
 
 class User(AbstractBaseUser, PermissionsMixin):
