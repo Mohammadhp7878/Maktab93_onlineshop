@@ -2,28 +2,35 @@ from django.shortcuts import render, redirect
 from rest_framework.views import APIView
 import random
 from utilize import send_otp
-from .serializers import PhoneSerializer, OtpSerializer
+from .serializers import  PhoneSerializer
 from .models import OtpCode
+import redis
+from rest_framework.response import Response
 
+redis_client = redis.StrictRedis()
 
 class LoginAPI(APIView):
     def post(self, request):
         serializer = PhoneSerializer(data=request.data)
         if serializer.is_valid():
             phone_number = serializer.validated_data['phone_number']
-            code = random.randint(10000, 99999)
-            send_otp(phone_number, code)
-        else: 
-            serializer.errors        
+            code = random.randint(100000, 999999)
+            # send_otp(phone_number, code)
+            redis_client.set(phone_number, code)
+            print(code)
+            return Response({"message": "OTP sent successfully"})
+        else:
+            return Response(serializer.errors, status=400)
 
 
-class VerifyAPI(APIView):
-    def post(self, request):
-        serializer = OtpSerializer
-        if serializer.is_valid():
-            phone_number = serializer.validated_data['phone_number']
-            code = serializer.validated_data['code']
-        if OtpCode.objects.get(phone_number, code):
+
+# class VerifyAPI(APIView):
+#     def post(self, request):
+#         serializer = OtpSerializer
+#         if serializer.is_valid():
+#             phone_number = serializer.validated_data['phone_number']
+#             code = serializer.validated_data['code']
+#         if OtpCode.objects.get(phone_number, code):
             ...
 
 # class Register(View):
