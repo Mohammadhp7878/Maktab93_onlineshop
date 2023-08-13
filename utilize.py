@@ -16,7 +16,7 @@ def validate_password(value):
 
 def send_otp(phone_number, code):
     try:
-        api = KavenegarAPI('742F6645615078555652485A614A79754761596F314D4E32355668626F42366D6969764B6862334B456C6F3D', timeout=20)
+        api = KavenegarAPI('742F6645615078555652485A614A79754761596F314D4E32355668626F42366D6969764B6862334B456C6F3D')
         params = {
             'sender': '',#optional
             'receptor': phone_number ,#multiple mobile number, split by comma
