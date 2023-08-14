@@ -3,10 +3,11 @@ from rest_framework.views import APIView
 import random
 from utilize import send_otp
 from .serializers import  PhoneSerializer, CodeSerializer
+from .models import User
 import redis
 from rest_framework.response import Response
 from hashlib import sha256
-
+from django.core.cache import cache
 
 redis_client = redis.StrictRedis()
 
@@ -16,13 +17,12 @@ class LoginAPI(APIView):
         serializer = PhoneSerializer(data=request.data)
         if serializer.is_valid():
             phone_number = serializer.validated_data['phone_number']
-            code = random.randint(100000, 999999)
+            code = str(random.randint(100000, 999999))
             hashed_code = sha256(code.encode()).hexdigest()
-            hashed_phone = sha256(phone_number.encode()).hexdigest()
             # send_otp(phone_number, code)
-            redis_client.set(phone_number, hashed_code)
+            cache.set(phone_number, hashed_code)
             response = Response({"message": "OTP sent successfully"})
-            response.set_cookie('phone_number', hashed_phone, 180)
+            response.set_cookie('phone_number', phone_number, 180)
             print(code)
             return response
         else:
@@ -32,12 +32,22 @@ class LoginAPI(APIView):
 
 class VerifyAPI(APIView):
     def post(self, request):
-        serializer = CodeSerializer
+        serializer = CodeSerializer(data=request.data)
         if serializer.is_valid():
-            user_code = serializer.validated_data['code']
+            user_code = str(serializer.validated_data['code'])
             user_hashed_code = sha256(user_code.encode()).hexdigest()
             phone = request.COOKIES.get('phone_number')
-            
+            saved_code = cache.get(phone)
+            if saved_code and saved_code == user_hashed_code:
+                User.objects.get_or_create(phone_number=phone)
+                response = Response({'message': f'Welcome {phone}'})
+                response.delete_cookie("phone_number")
+                return response
+            else:
+                return Response({'message': 'code is not valid'}, status=400)
+        else:
+            return Response(serializer.errors, status=400)
+        
 
 
 # class Register(View):
