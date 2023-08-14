@@ -14,3 +14,7 @@ class PhoneSerializer(serializers.Serializer):
             raise serializers.ValidationError("Invalid phone number format")
 
         return phone
+    
+
+class CodeSerializer(serializers.Serializer):
+    code = serializers.CharField()
