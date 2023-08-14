@@ -2,10 +2,10 @@ from django.shortcuts import render, redirect
 from rest_framework.views import APIView
 import random
 from utilize import send_otp
-from .serializers import  PhoneSerializer
-from .models import OtpCode
+from .serializers import  PhoneSerializer, CodeSerializer
 import redis
 from rest_framework.response import Response
+from hashlib import sha256
 
 redis_client = redis.StrictRedis()
 
@@ -15,23 +15,28 @@ class LoginAPI(APIView):
         if serializer.is_valid():
             phone_number = serializer.validated_data['phone_number']
             code = random.randint(100000, 999999)
+            hashed_code = sha256(code.encode()).hexdigest()
+            hashed_phone = sha256(phone_number.encode()).hexdigest()
             # send_otp(phone_number, code)
-            redis_client.set(phone_number, code)
+            redis_client.set(phone_number, hashed_code)
+            response = Response({"message": "OTP sent successfully"})
+            response.set_cookie('phone_number', hashed_phone, 180)
             print(code)
-            return Response({"message": "OTP sent successfully"})
+            return response
         else:
             return Response(serializer.errors, status=400)
 
 
 
-# class VerifyAPI(APIView):
-#     def post(self, request):
-#         serializer = OtpSerializer
-#         if serializer.is_valid():
-#             phone_number = serializer.validated_data['phone_number']
-#             code = serializer.validated_data['code']
-#         if OtpCode.objects.get(phone_number, code):
-            ...
+class VerifyAPI(APIView):
+    def post(self, request):
+        serializer = CodeSerializer
+        if serializer.is_valid():
+            user_code = serializer.validated_data['code']
+            user_hashed_code = sha256(user_code.encode()).hexdigest()
+            phone = request.COOKIES.get('phone_number')
+            
+
 
 # class Register(View):
 #     reg_template = "login.html"
