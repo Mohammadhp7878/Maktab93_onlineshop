@@ -7,20 +7,20 @@ from utilize import validate_password
 from django.core.cache import cache
 
 
-class OtpCode(models.Model):
-    phone_number = models.CharField(max_length=11, unique=True)
-    code = models.CharField(max_length=6)
+# class OtpCode(models.Model):
+#     phone_number = models.CharField(max_length=11, unique=True)
+#     code = models.CharField(max_length=6)
 
-    def save(self, *args, **kwargs):
+#     def save(self, *args, **kwargs):
         
-        cache.set(self.phone_number, self.code, 120)
+#         cache.set(self.phone_number, self.code, 120)
 
-    def retrieve_code(self, phone_number):
-        if self.phone_number == phone_number:
-            return cache.get(self.phone_number)
+#     def retrieve_code(self, phone_number):
+#         if self.phone_number == phone_number:
+#             return cache.get(self.phone_number)
         
-    def __str__(self) -> str:
-        return self.phone_number
+#     def __str__(self) -> str:
+#         return f'self.phone_number'
 
 
 class User(AbstractBaseUser, PermissionsMixin):

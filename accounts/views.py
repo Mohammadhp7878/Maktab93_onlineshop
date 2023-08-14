@@ -7,7 +7,9 @@ import redis
 from rest_framework.response import Response
 from hashlib import sha256
 
+
 redis_client = redis.StrictRedis()
+
 
 class LoginAPI(APIView):
     def post(self, request):
