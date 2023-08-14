@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.views import View
+from rest_framework.viewsets import GenericViewSet, ModelViewSet
+from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin
 from .models import Cart, CartProduct
 from .serializers import (
     CartSerializer,
@@ -7,8 +9,8 @@ from .serializers import (
     AddProductSerializer,
     UpdateProductSerializer,
 )
-from rest_framework.viewsets import GenericViewSet, ModelViewSet
-from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin
+from .permissions import IsCartOwner
+
 
 
 class CartPage(View):
@@ -17,13 +19,16 @@ class CartPage(View):
 
 
 class CartViewSet(CreateModelMixin, RetrieveModelMixin, GenericViewSet):
+    permission_classes = [IsCartOwner]
     queryset = Cart.objects.prefetch_related("cartproducts__products").all()
     serializer_class = CartSerializer
 
 
 class CartProductsViewSet(ModelViewSet):
     http_method_names = ["get", "post", "patch", "delete"]
+    permission_classes = [IsCartOwner]
 
+    
     def get_queryset(self):
         return CartProduct.objects.filter(carts=self.kwargs["cart_pk"]).select_related(
             "products"
