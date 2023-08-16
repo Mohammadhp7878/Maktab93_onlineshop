@@ -1,15 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <form action="" method="post">
+{%  extends 'base.html'%}
+{% load static %}
+{% block header_link %}
+<link rel="stylesheet" href="{% static 'css/verify.css' %}">
+{% endblock %}
+{% block content %}
+
+<div class="container">
+    <h2 id="verify_header">register/login</h2>
+    <form class="form-container" id="verify_form"  action="">
         {% csrf_token %}
-        {{ form.as_p}}
-        <button type="submit">confirm</button>
+        <label class="verify_label" for="code">enter code</label>
+        <input type="text" id="code" name="code" placeholder="123456">
+        <button type="submit" id="verify_button">confirm</button>
     </form>
-</body>
-</html>
+</div>
+
+<script src="{% static 'js/verify.js' %}"></script>
+{% endblock %}
