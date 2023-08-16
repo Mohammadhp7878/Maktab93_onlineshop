@@ -10,7 +10,7 @@ product_router.register('comments_api', views.CommentViewSet, basename='comments
 
 
 urlpatterns = [
-    path('products', views.ProductsPage.as_view(), name='products_page'),
+    path('products/', views.ProductsPage.as_view(), name='products_page'),
     path('categories_list/', views.CategoryView.as_view(), name='categories_list'),
     path('', include(product_router.urls)),
     path('', include(router.urls)),
