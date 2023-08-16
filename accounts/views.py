@@ -12,18 +12,19 @@ from utilize import send_otp
 from .models import User
 from .serializers import PhoneSerializer, CodeSerializer
 
+
 class LoginPage(View):
     def get(self, request):
         if request.user.is_authenticated:
-            return redirect('/')
-        return render(request, 'login.html')
+            return redirect("/")
+        return render(request, "login.html")
 
 
 class VerifyPage(View):
     def get(self, request):
         if request.user.is_authenticated:
-            return redirect('/')
-        return render(request, 'verify.html')
+            return redirect("/")
+        return render(request, "verify.html")
 
 
 class LoginAPI(APIView):
@@ -59,7 +60,9 @@ class VerifyAPI(APIView):
                 login(request, user_instance)
                 refresh_token = RefreshToken.for_user(user_instance)
                 access_token = str(refresh_token.access_token)
-                response = Response({"message": f"Welcome {phone}", "token": access_token})
+                response = Response(
+                    {"message": f"Welcome {phone}", "token": access_token}
+                )
                 print(access_token)
                 response.delete_cookie("phone_number")
                 return response
@@ -67,3 +70,9 @@ class VerifyAPI(APIView):
                 return Response({"message": "code is not valid"}, status=400)
         else:
             return Response(serializer.errors, status=400)
+
+
+
+class ProfilePage(View):
+    def get(self, request):
+        return render(request, 'profile.html')
