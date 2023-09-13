@@ -9,6 +9,9 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(models.Product)
 class ProductAdmin(admin.ModelAdmin):
+    prepopulated_fields = {
+        'slug': ['name']
+    }
     list_display = ['name', 'inventory', 'price']
     ordering = ['name', 'price']
     search_fields = ['name', 'category']
