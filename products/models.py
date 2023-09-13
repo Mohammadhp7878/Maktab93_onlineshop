@@ -32,7 +32,7 @@ class Category(BaseModel):
 
 
 class Gallery(BaseModel):
-    image_url = models.ImageField(upload_to='media/products', default='media/products/product-8.jpg')
+    image_url = models.ImageField(upload_to='media/products', default='media/products/1.jpg')
     alt = models.CharField(max_length=250)
     
     def __str__(self) -> str:
@@ -52,7 +52,7 @@ class Product(BaseModel):
     categories = models.ManyToManyField(to=Category, related_name="products")
     slug = models.SlugField()
     discount = models.PositiveSmallIntegerField(default=0)
-    description = models.TextField()
+    description = models.TextField(null=True, blank=True)
     inventory = models.PositiveSmallIntegerField()
     price = models.DecimalField(max_digits=8, decimal_places=2)
     images = models.ForeignKey(to=Gallery, on_delete=models.SET_NULL, null=True, related_name='products')
