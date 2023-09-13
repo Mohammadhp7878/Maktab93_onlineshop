@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from django.views import View
 from django.core.cache import cache
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.authtoken.models import Token
 from hashlib import sha256
 import random
 from utilize import send_otp
@@ -76,3 +78,19 @@ class VerifyAPI(APIView):
 class ProfilePage(View):
     def get(self, request):
         return render(request, 'profile.html')
+    
+
+
+
+class LogOut(View):
+    def get(self, request):
+        if request.user.is_authenticated:
+            try:
+                token = Token.objects.get(user=request.user)
+                token.delete()
+            except Exception as e:
+                print("Error deleting token:", e)
+            logout(request)
+            return redirect('login/')
+        else: 
+            return HttpResponse({'message': 'you are not authorized'}, status=404)
