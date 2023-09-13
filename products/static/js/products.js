@@ -22,7 +22,7 @@
                                     ? `<h6><del>${product.price}</del> ${product.discount_to_price}</h6>`
                                     : `<h6>${product.price}</h6>`
                             }
-                            <a href="${product.detail_url}" class="btn btn-sm text-dark p-0">
+                            <a href="${product.slug}" class="btn btn-sm text-dark p-0">
                                 <i class="fas fa-eye text-primary mr-1"></i>View Detail
                             </a>
                             <a href="${product.add_to_cart_url}" class="btn btn-sm text-dark p-0">
